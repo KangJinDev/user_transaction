@@ -24,7 +24,7 @@ class App extends Component {
             <Router history={history}>
                     <div>
                     <Header />
-                        <Routes />
+                    <Routes />
                     <Footer />
                     </div>
             </Router>

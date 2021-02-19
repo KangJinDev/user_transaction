@@ -7,11 +7,14 @@ const customerReducer = (state = initialState, action) => {
     switch (action.type) {
 
         case ADD_CUSTOMER:
+            console.log("add customer")
             return {
                 ...state,
-                customers : [...state.customers,...action.payload]
+                customers : [...state.customers, ...action.payload]
             }
         case GET_CUSTOMERS:
+            console.log("Get customer")
+
         return {
             ...state,
             customers : action.payload,

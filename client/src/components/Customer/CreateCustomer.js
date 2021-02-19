@@ -32,7 +32,7 @@ class CreateCustomer extends Component {
       render() {
     
         return (
-          <form onSubmit={this.handleSubmit}>
+          <form className="container" onSubmit={this.handleSubmit} >
             <div className="form-group">
               <label htmlFor="firstName">First Name</label>
               <input
