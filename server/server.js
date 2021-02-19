@@ -1,3 +1,5 @@
+const port = process.env.PORT || 3001;
+
 const express = require('express');
 const bodyParser = require('body-parser');
 
@@ -7,6 +9,10 @@ const app = express();
 // Configuring the database
 const dbConfig = require('./config/database.config.js');
 const mongoose = require('mongoose');
+
+var router = require('./app/routes/index');
+
+
 
 // Connecting to the database
 mongoose.connect(dbConfig.url, {
@@ -29,9 +35,8 @@ app.get('/', (req, res) => {
     res.json({"message": "Welcome to Shopping List application. Take Lists quickly. Organize and keep track of all your Shopping Lists."});
 });
 
-require('./app/routes/user.routes.js')(app);
-require('./app/routes/transaction.routes.js')(app);
+app.use('/api', router);
 // listen for requests
-app.listen(3000, () => {
-    console.log("Server is listening on port 3000");
+app.listen(port, () => {
+    console.log("Server is listening on port 3001");
 });

@@ -2,6 +2,12 @@ const User = require('../models/user.model.js');
 
 // Create and Save a new List
 exports.create = (req, res) => {
+    // Validate request
+    if(!req.body.name || !req.body.email) {
+        return res.status(400).send({
+            message: "User Name or Email Couldn't be empty"
+        });
+    }
     const user = new User({
         name : req.body.name, 
         description : req.body.description, 
@@ -13,7 +19,7 @@ exports.create = (req, res) => {
         max_amount : req.body.max_amount,
     });
 
-    // Save List in the database
+    // Save User in the database
     user.save()
     .then(data => {
         res.send(data);
@@ -24,7 +30,7 @@ exports.create = (req, res) => {
     });
 };
 
-// Retrieve and return all lists from the database.
+// Retrieve and return all users from the database.
 exports.findAll = (req, res) => {
     User.find()
     .then(users => {

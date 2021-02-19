@@ -1,9 +1,15 @@
 const User = require('../models/user.model.js');
 const Transaction = require('../models/transaction.model.js');
+const { validate } = require('../models/user.model.js');
 
 // Create and Save a new List
 exports.create = (req, res) => {
-
+    // Validate request
+    if(!req.body.source_userid || !req.body.target_userid) {
+        return res.status(400).send({
+            message: "Source_userid or Target_userid Couldn't be empty"
+        });
+    }
     // Create a Transaction
     const transaction = new Transaction({
         currency_amount : req.body.currency_amount,
@@ -18,7 +24,8 @@ exports.create = (req, res) => {
     // Save Transaction in the database
     transaction.save()
     .then(data => {
-        res.send(data);
+        console.log(data);
+        res.send(data._id);
     }).catch(err => {
         res.status(500).send({
             message: err.message || "Some error occurred while creating the new Transaction."
@@ -27,28 +34,19 @@ exports.create = (req, res) => {
 };
 
 // Retrieve and return all transactions from the database.
-exports.findAll = (req, res) => {
-    Transaction.find()
+exports.history = (req, res) => {
+    // validate
+    var query = {};
+    if(req.params.userid) {
+        query = {$or:[{source_userid:{$regex: req.params.userid, $options: 'i'}},{target_userid:{$regex: req.params.userid, $options: 'i'}}]}
+    }
+    Transaction.find(query)
     .then(transactions => {
+        console.log(res);
         res.send(transactions);
     }).catch(err => {
         res.status(500).send({
             message: err.message || "Some error occurred while retrieving transactions."
         });
     });
-};
-
-// Find a single list with a transaction_id
-exports.findOne = (req, res) => {
-
-};
-
-// Update a list identified by the transaction_id in the request
-exports.update = (req, res) => {
-  
-};
-
-// Delete a list with the specified transaction_id in the request
-exports.delete = (req, res) => {
-
 };
